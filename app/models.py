@@ -1,21 +1,28 @@
-from pydantic import BaseModel
+from pynamodb.models import Model
+from pynamodb.attributes import  UnicodeAttribute, UTCDateTimeAttribute
 from typing import Optional
 
-class FileValute(BaseModel):
-    id: str
-    client: str
-    reference_id: Optional[str] = ""
-    request_type: Optional[str] = ""
-    link: str
-    file_name: str
-    file_path: str
-    bucket_link: str
+class FileVault(Model):
+    class Meta:
+        table_name = "filevault"
+        region = "us-east-1"
+    
+    id =  UnicodeAttribute(hash_key=True)
+    client = UnicodeAttribute()
+    reference_id = UnicodeAttribute(null=True)
+    request_type = UnicodeAttribute(null=True)
+    link= UnicodeAttribute()
+    file_name= UnicodeAttribute()
+    file_path= UnicodeAttribute()
+    bucket_link= UnicodeAttribute()
+    created_at = UTCDateTimeAttribute()
+    modified_at = UTCDateTimeAttribute()
 
-    def save(self):
-        # Save to DynamoDB
-        pass
-
-    @classmethod
-    def get(cls, user_id: str):
-        # Get from DynamoDB
-        pass
+class FileVaultEvent(Model):
+    class Meta:
+        table_name = "filevault_event"
+        region = "us-east-1"
+    
+    id =  UnicodeAttribute(hash_key=True)
+    status= UnicodeAttribute()
+    created_at = UTCDateTimeAttribute()
